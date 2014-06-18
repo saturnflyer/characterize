@@ -11,10 +11,23 @@ class UsersController < ApplicationController
   def show
   end
 end
+# the above sets a helper_method of 'user' and loads UserCharacter
+
+class UsersController < ApplicationController
+  def show
+    characterize(user, display_module)
+  end
+
+  def display_module
+    current_user.can_edit?(user) ? AdministratedUser : StandardUser
+  end
+end
+
+# use a standard interface in your views but change the character of the object
 
 module AdministratedUser
   def edit_link
-    link_to('Edit', admin_user_path)
+    view.link_to('Edit', admin_user_path)
   end
 end
 
