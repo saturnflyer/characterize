@@ -2,6 +2,11 @@ require "characterize"
 require "rails"
 module Characterize
   class Railtie < ::Rails::Railtie
+
+    config.after_initialize do |app|
+      app.config.paths.add 'app/characters', eager_load: true
+    end
+
     if defined?(ActiveRecord)
       initializer 'characterize.active_record' do |app|
         ActiveRecord::Base.send(:include, Characterize)
