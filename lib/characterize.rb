@@ -1,6 +1,7 @@
 require "characterize/version"
 require "characterize/controller"
 require "casting"
+require 'characterize/railtie' if defined?(::Rails)
 
 module Characterize
   def self.included(klass)
@@ -8,10 +9,6 @@ module Characterize
       include Casting::Client
       delegate_missing_methods
     }
-  end
-  
-  def viewable?
-    !!view
   end
   
   def view
@@ -22,14 +19,4 @@ module Characterize
     @view = obj
     self
   end
-end
-
-require 'active_record'
-class ActiveRecord::Base
-  include Characterize
-end
-
-require 'action_controller'
-class ActionController::Base
-  include Characterize::Controller
 end
