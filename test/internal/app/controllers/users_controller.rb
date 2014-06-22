@@ -1,10 +1,6 @@
 class UsersController < ApplicationController
-  characterize :user
+  characterize :user, default: [SpecialCharacter]
   
   def show; end
-  
-  def user_modules
-    [SpecialCharacter]
-  end
   
 end
