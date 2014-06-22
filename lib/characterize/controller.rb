@@ -41,7 +41,7 @@ module Characterize
           end
           
           def #{object_name}_default_character
-            #{Converter.new(object_name).to_constant_name}Character
+            ::#{Converter.new(object_name).to_constant_name}Character
           end
         }
         self.const_set(characterize_item.to_constant_name + 'ControllerMethods', mod)
