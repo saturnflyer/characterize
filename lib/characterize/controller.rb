@@ -34,9 +34,9 @@ module Characterize
       object_name = options.shift
       actions_hash = options.last
 
-      default_characters = actions_hash.delete(:default) || ["::#{Converter.new(object_name).to_constant_name}Character"]
+      object_constant_name = object_name.to_s.gsub(/(?:^|_)([a-z])/){ $1.upcase }.gsub('/','::')
+      default_characters = actions_hash.delete(:default) || ["::#{object_constant_name}Character"]
 
-      characterize_item = Converter.new(object_name)
       mod = Module.new
       mod.module_eval %{
         def #{object_name}
@@ -45,7 +45,7 @@ module Characterize
         end
 
         def load_#{object_name}
-          #{characterize_item.to_constant_name}.find(params[:id])
+          #{object_constant_name}.find(params[:id])
         end
 
         def default_#{object_name}_characters
@@ -59,29 +59,9 @@ module Characterize
           end
         }
       end
-      self.const_set(characterize_item.to_constant_name + 'ControllerMethods', mod)
+      self.const_set(object_constant_name + 'ControllerMethods', mod)
       include mod
       self.send(:helper_method, object_name)
-    end
-    
-    class Converter
-      def initialize(string)
-        @string = string.to_s
-      end
-      
-      def to_object_name
-        to_path.split('/').last
-      end
-      
-      def to_path
-        # TODO: get platform-specific path delimiter
-        @string.gsub('::','/').gsub(/([A-Z])/){ "_#{$1.downcase}" }.gsub(/^_|\/_/,'/').sub(/^\//,'')
-      end
-      
-      def to_constant_name
-        @string.gsub(/(?:^|_)([a-z])/){ $1.upcase }.gsub('/','::')
-        # TODO: get platform-specific path delimiter
-      end
     end
   end
 end
