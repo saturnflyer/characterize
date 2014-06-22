@@ -9,7 +9,7 @@ module Characterize
     private
 
     def characterize(obj, *mods)
-      obj.__set_view__(view_context).cast_as(*mods)
+      obj.__set_characterize_view__(view_context).cast_as(*mods)
       obj
     end
 

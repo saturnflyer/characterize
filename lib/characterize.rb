@@ -12,11 +12,11 @@ module Characterize
   end
   
   def view
-    @view
+    @characterize_view
   end
   
-  def __set_view__(obj)
-    @view = obj
+  def __set_characterize_view__(obj)
+    @characterize_view = obj
     self
   end
 end
