@@ -41,13 +41,7 @@ module Characterize
       mod.module_eval %{
         def #{object_name}
           return @#{object_name} if defined?(@#{object_name})
-          current_action_character_method_name = ['#{object_name}',action_name,'characters'].join('_')
-          if self.respond_to?(current_action_character_method_name)
-            mods = self.send(current_action_character_method_name)
-          else
-            mods = default_#{object_name}_characters
-          end
-          @#{object_name} = characterize(load_#{object_name}, *mods)
+          @#{object_name} = characterize(load_#{object_name}, *characters_for_action(:#{object_name}, action_name))
         end
 
         def load_#{object_name}
