@@ -4,6 +4,12 @@ Make your models behave in special ways.
 
 Characterize is built on top of [Casting](https://github.com/saturnflyer/casting) and makes it easy to get going in Rails.
 
+[![Build Status](https://travis-ci.org/saturnflyer/characterize.png?branch=master)](https://travis-ci.org/saturnflyer/characterize)
+[![Code Climate](https://codeclimate.com/github/saturnflyer/characterize.png)](https://codeclimate.com/github/saturnflyer/characterize)
+[![Coverage Status](https://coveralls.io/repos/saturnflyer/characterize/badge.png)](https://coveralls.io/r/saturnflyer/characterize)
+[![Gem Version](https://badge.fury.io/rb/characterize.png)](http://badge.fury.io/rb/characterize)
+
+
 ## Usage
 
 ```ruby
