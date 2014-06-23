@@ -2,6 +2,8 @@
 
 Make your models behave in special ways.
 
+Characterize is built on top of [Casting](https://github.com/saturnflyer/casting) and makes it easy to get going in Rails.
+
 ## Usage
 
 ```ruby
