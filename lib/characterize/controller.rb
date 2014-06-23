@@ -12,15 +12,11 @@ module Characterize
     end
 
     def characters_for_action(object_name, action_name)
-      if self.respond_to?("#{object_name}_#{action_name}_characters") && action_methods.include?(action_name.to_s)
-        Array(self.send("#{object_name}_#{action_name}_characters"))
+      if self.respond_to?("#{object_name}_#{action_name}_features") && action_methods.include?(action_name.to_s)
+        Array(self.send("#{object_name}_#{action_name}_features"))
       else
-        self.send("default_#{object_name}_characters")
+        self.send("default_#{object_name}_features")
       end
-    end
-
-    def self.view_features
-      [::Characterize::FeatureControls]
     end
   end
   
@@ -33,7 +29,7 @@ module Characterize
       actions_hash = options.last
 
       object_constant_name = object_name.to_s.gsub(/(?:^|_)([a-z])/){ $1.upcase }.gsub('/','::')
-      default_characters = actions_hash.delete(:default) || ["::#{object_constant_name}#{Characterize.module_suffix}"]
+      default_features = actions_hash.delete(:default) || ["::#{object_constant_name}#{Characterize.module_suffix}"]
 
       mod = Module.new
       mod.module_eval %{
@@ -46,13 +42,13 @@ module Characterize
           #{object_constant_name}.find(params[:id])
         end
 
-        def default_#{object_name}_characters
-          [#{default_characters.map(&:to_s).join(', ')}]
+        def default_#{object_name}_features
+          [#{default_features.map(&:to_s).join(', ')}]
         end
       }
       actions_hash.each_pair do |action_name, characters|
         mod.module_eval %{
-          def #{object_name}_#{action_name}_characters
+          def #{object_name}_#{action_name}_features
             [#{characters.map(&:to_s).join(', ')}]
           end
         }
