@@ -19,4 +19,12 @@ module Characterize
     @characterize_view = obj
     self
   end
+
+  def self.module_suffix
+    @characterize_suffix ||= 'Character'
+  end
+
+  def self.module_suffix=(val)
+    @characterize_suffix = val
+  end
 end

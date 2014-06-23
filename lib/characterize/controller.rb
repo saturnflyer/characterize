@@ -35,7 +35,7 @@ module Characterize
       actions_hash = options.last
 
       object_constant_name = object_name.to_s.gsub(/(?:^|_)([a-z])/){ $1.upcase }.gsub('/','::')
-      default_characters = actions_hash.delete(:default) || ["::#{object_constant_name}Character"]
+      default_characters = actions_hash.delete(:default) || ["::#{object_constant_name}#{Characterize.module_suffix}"]
 
       mod = Module.new
       mod.module_eval %{
