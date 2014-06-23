@@ -21,6 +21,12 @@ class UsersController < ApplicationController
 end
 # the above sets a helper_method of 'user' and loads UserCharacter
 
+module UserCharacter
+  def special_behavior_available_in_the_view
+     # ...
+  end
+end
+
 class UsersController < ApplicationController
   def show
     characterize(user, display_module)
