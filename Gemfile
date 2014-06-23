@@ -4,7 +4,8 @@ source 'https://rubygems.org'
 gemspec
 
 group :test do
-  gem 'sqlite3'
+  gem "sqlite3", :platform => [:ruby, :mswin, :mingw]
+  gem "jdbc-sqlite3", :platform => :jruby
   gem 'rails'
   gem 'minitest-spec-rails'
   gem 'rubinius-coverage', platform: :rbx
