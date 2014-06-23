@@ -38,6 +38,21 @@ module StandardUser
 end
 ```
 
+Set special modules to be used for different actions:
+
+```ruby
+class UsersController < ApplicationController
+  characterize :user, show: [SpecialStuff, StandardStuff],
+                      edit: [EditingCharacter],
+                      default: [StandardStuff]
+
+  def show
+  end
+end
+```
+
+By default Characterize will look for modules that match the name of your object. So `characterize :user` would apply a `UserCharacter` module (and will blow up if it can't find it.) Or you can override it with the above configuration.
+
 ## Installation
 
 Add this line to your application's Gemfile:
