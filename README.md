@@ -1,6 +1,6 @@
 # Characterize
 
-Make your models behave in special ways.
+Make your models behave in special ways without wrapping them.
 
 Characterize is built on top of [Casting](https://github.com/saturnflyer/casting) and makes it easy to get going in Rails.
 
@@ -8,6 +8,8 @@ Characterize is built on top of [Casting](https://github.com/saturnflyer/casting
 [![Code Climate](https://codeclimate.com/github/saturnflyer/characterize.png)](https://codeclimate.com/github/saturnflyer/characterize)
 [![Coverage Status](https://coveralls.io/repos/saturnflyer/characterize/badge.png)](https://coveralls.io/r/saturnflyer/characterize)
 [![Gem Version](https://badge.fury.io/rb/characterize.png)](http://badge.fury.io/rb/characterize)
+
+
 
 
 ## Usage
@@ -66,6 +68,19 @@ end
 ```
 
 By default Characterize will look for modules that match the name of your object. So `characterize :user` would apply a `UserCharacter` module (and will blow up if it can't find it.) Or you can override it with the above configuration.
+
+## Atering the Settings
+
+Characterize will automatically look for modules using the "Character" suffix in it's name. But you can change this if you like.
+
+Just create an initializer which will change the setting when your Rails application boots:
+
+```ruby
+Characterize.module_suffix = 'Details'
+```
+
+With the above change, using `characterize :user` in your controller, it will attempt to load `UserDetails` instead of `UserCharacter`. This will apply for your *entire* application; if you only want to override the suffix in some places, just specify the module you want in your controller.
+
 
 ## Installation
 
