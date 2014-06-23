@@ -1,5 +1,3 @@
-require 'characterize/feature_controls'
-
 module Characterize
   module Controller
     def self.included(klass)

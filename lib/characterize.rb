@@ -1,5 +1,6 @@
 require "characterize/version"
 require "characterize/controller"
+require 'characterize/feature_controls'
 require "casting"
 require 'characterize/railtie' if defined?(::Rails)
 
@@ -26,5 +27,17 @@ module Characterize
 
   def self.module_suffix=(val)
     @characterize_suffix = val
+  end
+
+  def self.standard_features
+    @standard_features ||= builtin_standard_features
+  end
+
+  def self.standard_features=(mods_array)
+    @standard_features = mods_array
+  end
+
+  def self.builtin_standard_features
+    [::Characterize::FeatureControls]
   end
 end

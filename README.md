@@ -71,6 +71,8 @@ By default Characterize will look for modules that match the name of your object
 
 ## Atering the Settings
 
+### Module names
+
 Characterize will automatically look for modules using the "Character" suffix in it's name. But you can change this if you like.
 
 Just create an initializer which will change the setting when your Rails application boots:
@@ -81,6 +83,27 @@ Characterize.module_suffix = 'Details'
 
 With the above change, using `characterize :user` in your controller, it will attempt to load `UserDetails` instead of `UserCharacter`. This will apply for your *entire* application; if you only want to override the suffix in some places, just specify the module you want in your controller.
 
+### Creating your own standard features
+
+By default Characterize has some helpful features built in. You can use them like this:
+
+```ruby
+class UsersController < ApplicationController
+  characterize :user, show: [SpecialStuff].concat(Characterize.standard_features)
+
+  def show
+  end
+end
+```
+
+That will load the built-in features from Characterize. But you can change what is considered "standard" in your application.
+
+Set the `standard_features` option in your initializer to whatever you want:
+
+```ruby
+original_features = Characterize.standard_features
+Characterize.standard_features = [MyAwesomeStuff, ExtraDoodads].concat(original_features)
+```
 
 ## Installation
 
