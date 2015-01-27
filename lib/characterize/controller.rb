@@ -2,6 +2,7 @@ module Characterize
   module Controller
     def self.included(klass)
       klass.extend(::Characterize::ControllerMacros)
+      klass.helper_method(:characterize)
     end
     
     private

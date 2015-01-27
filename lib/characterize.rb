@@ -12,7 +12,7 @@ module Characterize
     }
   end
   
-  def view
+  def __view__
     @characterize_view
   end
   
