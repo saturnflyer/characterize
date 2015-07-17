@@ -69,7 +69,7 @@ end
 
 By default Characterize will look for modules that match the name of your object. So `characterize :user` would apply a `UserCharacter` module (and will blow up if it can't find it.) Or you can override it with the above configuration.
 
-## Atering the Settings
+## Altering the Settings
 
 ### Module names
 
