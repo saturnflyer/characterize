@@ -9,9 +9,6 @@ Characterize is built on top of [Casting](https://github.com/saturnflyer/casting
 [![Coverage Status](https://coveralls.io/repos/saturnflyer/characterize/badge.png)](https://coveralls.io/r/saturnflyer/characterize)
 [![Gem Version](https://badge.fury.io/rb/characterize.png)](http://badge.fury.io/rb/characterize)
 
-
-
-
 ## Usage
 
 ```ruby

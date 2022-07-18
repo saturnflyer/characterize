@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   
   def show; end
   def edit
-    render :text => user.editing_title
+    render :plain => user.editing_title
   end
   
 end
