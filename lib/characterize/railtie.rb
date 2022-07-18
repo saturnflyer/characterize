@@ -1,4 +1,3 @@
-require "rails"
 module Characterize
   class Railtie < ::Rails::Railtie
 
