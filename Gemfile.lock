@@ -3,7 +3,7 @@ PATH
   specs:
     characterize (0.1.0)
       casting (~> 1.0.1)
-      rails (>= 7.0.3.1)
+      rails (>= 7.0)
 
 GEM
   remote: https://rubygems.org/
