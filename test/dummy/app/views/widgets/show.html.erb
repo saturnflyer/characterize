@@ -1,1 +1,13 @@
 <p><%= widget.name %>: <%= widget.special %></p>
+
+<%= widget.with(:description, :p, class: 'described') %>
+
+<% widget.with(:description) do %>
+  <div class="blocky-description">Description block!</div>
+<% end %>
+
+<%= widget.with(:empty_data, :p, class: 'missing', without: "oops! it's missing") %>
+
+<%= widget.without(:empty_data, :h1, value: "You have no data", class: "nope") %>
+
+<%= widget.without(:description, :h1, value: "You have no data", with: "You DO have a description", class: "yup") %>

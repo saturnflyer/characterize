@@ -33,23 +33,19 @@ module Characterize
     #     </p>
     #   <%- end -%>
     #
-    def with(method_name, *tag_name_or_options)
+    def with(method_name, tag_name=nil, **options, &block)
+      without_option = options.delete(:without)
       value = self.public_send(method_name)
-      if with_conditions(method_name, value)
-        if block_given?
-          yield
-        else
-          tag_name, options = *tag_name_or_options
-          view.content_tag(tag_name, value, options)
-        end
-      else
-        without_option = tag_name_or_options.last.fetch(:without){ '' }
-        if without_option.respond_to?(:call)
-          without(method_name, &without_option)
-        else
-          view.concat(without_option)
-        end
+
+      capture_content = block || -> do
+        __view__.concat(__view__.content_tag(tag_name, value, options))
       end
+
+      if !with_conditions(method_name, value)
+        value = without_option
+      end
+
+      __view__.capture(&capture_content)
     end
     
     # Conditionally render content for the object when the attribute is NOT present.
@@ -63,16 +59,26 @@ module Characterize
     #       There are no favorites here.
     #     </p>
     #   <%- end -%>
+    #   <% user.without(:favorites, :p, value: 'No favorites!')
     #
-    def without(method_name, &block)
-      value = self.public_send(method_name)
-      if !with_conditions(method_name, value)
-        yield
+    def without(method_name, tag_name=nil, value: nil, **options, &block)
+      with_option = options.delete(:with)
+      method_value = self.public_send(method_name)
+      display_value = value
+
+      if with_conditions(method_name, method_value)
+        display_value = with_option
       end
+
+      capture_content = block || -> do
+        __view__.concat(__view__.content_tag(tag_name, display_value, options))
+      end
+
+      __view__.capture(&capture_content)
     end
     
     # Used to override behavior of with for the case of special attributes
-    def with_conditions(method_name, computed_value)
+    def with_conditions(_method_name, computed_value)
       !computed_value.nil? && computed_value != '' && computed_value != false
     end
   end
