@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     characterize (0.2.0)
-      casting (~> 1.0.1)
+      casting (~> 1.0.2)
       rails (>= 6.1)
 
 GEM
