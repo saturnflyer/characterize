@@ -64,6 +64,19 @@ end
 
 By default Characterize will look for modules that match the name of your object. So `characterize :user` would apply a `UserCharacter` module (and will blow up if it can't find it.) Or you can override it with the above configuration.
 
+You can also use it to characterize collections:
+
+```ruby
+class WidgetsController < ApplicationController
+  characterize_collection :widgets, index: [SuperWidgetCharacter]
+
+  def index
+  end
+end
+```
+
+This will create a `widgets` helper method that will return a collection object where enumerable methods will cast the object as the provided modules.
+
 ## Altering the Settings
 
 ### Module names
