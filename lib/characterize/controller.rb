@@ -87,7 +87,7 @@ module Characterize
         MOD
       end
 
-      self.const_set(object_constant_name + 'ControllerMethods', mod)
+      self.const_set(object_constant_name + 'CollectionControllerMethods', mod)
       include mod
       self.send(:helper_method, collection_name)
     end

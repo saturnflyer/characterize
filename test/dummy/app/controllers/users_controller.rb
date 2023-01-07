@@ -4,6 +4,10 @@ class UsersController < ApplicationController
   characterize :user, default: [SpecialCharacter],
                       edit: [EditUserCharacter]
   characterize :widget
+
+  characterize_collection :users
+
+  def index; end
   
   def show; end
   def edit

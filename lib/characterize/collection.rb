@@ -29,7 +29,7 @@ module Characterize
     end
     attr :casted_enum
 
-    def_delegators :casted_enum, *(Enumerator.instance_methods - [:enum])
+    def_delegators :casted_enum, *(Enumerator.instance_methods(false) - [:object_id])
 
     def method_missing(name, ...)
       if casted_enum.respond_to?(name, true)
