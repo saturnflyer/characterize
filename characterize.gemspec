@@ -22,5 +22,5 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
 
   spec.add_dependency "casting", "~> 1.0.1"
-  spec.add_dependency "rails", ">= 7.0"
+  spec.add_dependency "rails", ">= 6.1"
 end

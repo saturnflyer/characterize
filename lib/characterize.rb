@@ -2,6 +2,7 @@ require "characterize/version"
 require "characterize/controller"
 require 'characterize/feature_controls'
 require "casting"
+require "characterize/collection"
 require 'characterize/railtie' if defined?(::Rails)
 
 module Characterize
