@@ -7,13 +7,15 @@ module Characterize
     
     private
 
+    # Apply character modules to the given object.
+    # This will use either the provided modules or if none are provided, the
+    # configured default characters for the current controller action.
     def characterize(obj, *mods)
       object_name = obj.class.name.to_s.underscore
       features = !mods.empty? ? mods : characters_for_action(object_name, action_name)
       obj.__set_characterize_view__(view_context).cast_as(*features)
       obj
     end
-
 
     def characters_for_action(object_name, action_name)
       if self.respond_to?("#{object_name}_#{action_name}_features") && action_methods.include?(action_name.to_s)
@@ -27,6 +29,7 @@ module Characterize
   module ControllerMacros
     private
     
+    # Generate methods that will load and cast your object with the specified behaviors
     def characterize(object_name, **actions_hash)
       object_constant_name = object_name.to_s.gsub(/(?:^|_)([a-z])/){ $1.upcase }.gsub('/','::')
       default_features = actions_hash.delete(:default) || ["::#{object_constant_name}#{Characterize.module_suffix}"]
