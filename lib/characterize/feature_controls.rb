@@ -15,12 +15,7 @@ module Characterize
     #   <%- end -%>
     #
     def each_with_features(collection, *mods, &block)
-
-      collection.lazy.each do |obj|
-        obj.cast_as(*mods)
-        block.call(obj)
-        obj.uncast(mods.size)
-      end
+      Casting::Enum.enum(collection, *mods).each(&block)
     end
     
     # Conditionally render content for the object.
