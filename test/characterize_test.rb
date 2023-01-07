@@ -23,19 +23,25 @@ describe UsersController do
 
   it 'works with a different class' do
     get :show, params: { id: user.id }
-    assert_select 'div', 'Widget: it works!'
+    assert_select 'div', 'Widget true: it works!'
   end
 
   it 'renders collections with the configured features' do
     get :index
     assert_select 'p', 'Amy in a collection'
   end
+
+  it 'uses feature controls' do
+    get :show, params: { id: user.id }
+    assert_select 'p.widget-true', 'Widget true yes'
+    assert_select 'p.widget-false', 'Widget false yes'
+  end
 end
 
 describe WidgetsController do
   it 'has access to the with feature control' do
     get :show, params: { id: 1 }
-    assert_select 'p.described', 'This is the description of the Widget'
+    assert_select 'p.described', 'This is the description of the Widget true'
   end
 
   it 'can use a block for the with feature control' do

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   Characterize.standard_features = Characterize.builtin_standard_features + [StandardCharacter]
 
-  characterize :user, default: [SpecialCharacter],
+  characterize :user, default: [SpecialCharacter, UserCharacter],
                       edit: [EditUserCharacter]
   characterize :widget
 

@@ -18,17 +18,25 @@ module Characterize
     end
 
     def characters_for_action(object_name, action_name)
-      if self.respond_to?("#{object_name}_#{action_name}_features") && action_methods.include?(action_name.to_s)
+      defaults = if respond_to? "default_#{object_name}_features"
+        self.send("default_#{object_name}_features")
+      else
+        []
+      end
+
+      specific_characters = if self.respond_to?("#{object_name}_#{action_name}_features") && action_methods.include?(action_name.to_s)
         Array(self.send "#{object_name}_#{action_name}_features")
       else
-        self.send("default_#{object_name}_features") if respond_to? "default_#{object_name}_features"
+        []
       end
+
+      defaults.concat(specific_characters)
     end
   end
   
   module ControllerMacros
     private
-    
+
     # Generate methods that will load and cast your object with the specified behaviors
     def characterize(object_name, **actions_hash)
       object_constant_name = object_name.to_s.gsub(/(?:^|_)([a-z])/){ $1.upcase }.gsub('/','::')

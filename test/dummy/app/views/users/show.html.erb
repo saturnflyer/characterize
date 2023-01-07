@@ -2,3 +2,7 @@
 <p>Here's a special link: <%= user.special_link %></p>
 <p><%= user.hello %></p>
 <div><%= widget.name %>: <%= widget.special %></div>
+
+<% user.each_widget do |widget| %>
+  <p class="widget-<%= widget.flag %>"><%= widget.does_it_work? %></p>
+<% end %>

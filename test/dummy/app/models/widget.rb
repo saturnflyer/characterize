@@ -7,7 +7,7 @@ class Widget
   attr :flag
 
   def name
-    "Widget"
+    "Widget #{flag}"
   end
 
   def description
