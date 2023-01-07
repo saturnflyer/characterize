@@ -15,6 +15,7 @@ module Characterize
     #   <%- end -%>
     #
     def each_with_features(collection, *mods, &block)
+
       collection.lazy.each do |obj|
         obj.cast_as(*mods)
         block.call(obj)

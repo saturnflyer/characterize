@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    characterize (0.1.0)
+    characterize (0.2.0)
       casting (~> 1.0.1)
       rails (>= 6.1)
 
@@ -74,7 +74,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
     builder (3.2.4)
-    casting (1.0.1)
+    casting (1.0.2)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     date (3.3.3)
