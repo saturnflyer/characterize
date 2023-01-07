@@ -5,7 +5,7 @@ class UsersController < ApplicationController
                       edit: [EditUserCharacter]
   characterize :widget
 
-  characterize_collection :users
+  characterize_collection :users, index: [UserCollectionCharacter]
 
   def index; end
   

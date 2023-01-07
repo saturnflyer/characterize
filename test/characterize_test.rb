@@ -25,4 +25,9 @@ describe UsersController do
     get :show, params: { id: user.id }
     assert_select 'div', 'Widget: it works!'
   end
+
+  it 'renders collections with the configured features' do
+    get :index
+    assert_select 'p', 'Amy in a collection'
+  end
 end
