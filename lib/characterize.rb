@@ -31,7 +31,7 @@ module Characterize
   end
 
   def self.standard_features
-    @standard_features ||= builtin_standard_features
+    @standard_features ||= builtin_standard_features.dup
   end
 
   def self.standard_features=(mods_array)
@@ -39,6 +39,6 @@ module Characterize
   end
 
   def self.builtin_standard_features
-    [::Characterize::FeatureControls]
+    [::Characterize::FeatureControls].freeze
   end
 end
