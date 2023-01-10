@@ -123,6 +123,10 @@ And then execute:
 
     $ bundle
 
+And finally
+
+    $ rails g characterize:install
+
 Or install it yourself as:
 
     $ gem install characterize
