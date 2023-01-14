@@ -67,11 +67,12 @@ module Characterize
     #
     def without(method_name, tag_name=nil, value: nil, **options, &block)
       with_option = options.delete(:with)
-      method_value = self.public_send(method_name)
-      display_value = value
-
-      if with_conditions(method_name, method_value)
-        display_value = with_option
+      display_value = self.public_send(method_name).then do |method_value|
+        if with_conditions(method_name, method_value)
+          with_option
+        else
+          value
+        end
       end
 
       capture_content = block || -> do
