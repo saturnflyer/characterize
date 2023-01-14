@@ -35,14 +35,16 @@ module Characterize
     #
     def with(method_name, tag_name=nil, **options, &block)
       without_option = options.delete(:without)
-      value = self.public_send(method_name)
+      value = self.public_send(method_name).then do |value|
+        if with_conditions(method_name, value)
+          value
+        else
+          without_option
+        end
+      end
 
       capture_content = block || -> do
         __view__.concat(__view__.content_tag(tag_name, value, options))
-      end
-
-      if !with_conditions(method_name, value)
-        value = without_option
       end
 
       __view__.capture(&capture_content)
