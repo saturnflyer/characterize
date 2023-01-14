@@ -46,7 +46,7 @@ describe WidgetsController do
 
   it 'can use a block for the with feature control' do
     get :show, params: { id: 1 }
-    assert_select 'div.blocky-description', 'Description block!'
+    assert_select 'div.blocky-description', "Description block! This is the description of the Widget true"
   end
 
   it 'uses the without option in the with feature control' do
@@ -59,13 +59,13 @@ describe WidgetsController do
     assert_select 'h1.nope', "You have no data"
   end
 
-  it 'has access to the without feature control' do
-    get :show, params: { id: 1 }
-    assert_select 'p.missing', "oops! it's missing"
-  end
-
   it 'uses the with option in the without feature control' do
     get :show, params: { id: 1 }
     assert_select 'h1.yup', "You DO have a description"
+  end
+
+  it 'can use a block and argument for the without feature control' do
+    get :show, params: { id: 1 }
+    assert_select 'p.without-block', "There's no empty_data value. It is nil"
   end
 end

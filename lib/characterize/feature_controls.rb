@@ -24,42 +24,48 @@ module Characterize
     #  1. options for Rails' content_tag
     #  2. a block to render
     #
+    # The value of the method call will be yielded to the block
+    #
     # Examples:
     #
     #   <%= user.with(:favorites, :p, class: 'favorites-details') %>
-    #   <%- user.with(:favorites) do %>
+    #   <%- user.with(:favorites) do |favorites| %>
     #     <p class="favorites-details">
-    #       My Favorite Things: <%= user.favorites.join(', ') %>
+    #       My Favorite Things: <%= favorites.join(', ') %>
     #     </p>
     #   <%- end -%>
     #   <%= user.with(:favorites, :p, class: "whatever", without: "Oops! No favorites!")
     #
     def with(method_name, tag_name=nil, **options, &block)
       without_option = options.delete(:without)
-      value = self.public_send(method_name).then do |value|
-        if with_conditions(method_name, value)
-          value
+      method_value = self.public_send(method_name)
+
+      display_value = method_value.then do |method_value|
+        if with_conditions(method_name, method_value)
+          method_value
         else
           without_option
         end
       end
 
-      capture_content = block || -> do
-        __view__.concat(__view__.content_tag(tag_name, value, options))
+      capture_content = block || ->(method_value=nil) do
+        __view__.concat(__view__.content_tag(tag_name, display_value, options))
       end
 
-      __view__.capture(&capture_content)
+      __view__.capture(method_value, &capture_content)
     end
     
     # Conditionally render content for the object when the attribute is NOT present.
     #
     # Pass in a method name and a block to render.
     #
+    # The value of the method call will be yielded to the block
+    #
     # Examples:
     #
-    #   <%- user.without(:favorites) do %>
+    #   <%- user.without(:favorites) do |favorites| %>
     #     <p class="favorites-details none">
-    #       There are no favorites here.
+    #       There are no favorites here. You had <%= favorites %>
     #     </p>
     #   <%- end -%>
     #   <% user.without(:favorites, :p, value: 'No favorites!')
@@ -67,7 +73,9 @@ module Characterize
     #
     def without(method_name, tag_name=nil, value: nil, **options, &block)
       with_option = options.delete(:with)
-      display_value = self.public_send(method_name).then do |method_value|
+      method_value = self.public_send(method_name)
+
+      display_value = method_value.then do |method_value|
         if with_conditions(method_name, method_value)
           with_option
         else
@@ -75,11 +83,11 @@ module Characterize
         end
       end
 
-      capture_content = block || -> do
+      capture_content = (block || ->(method_value = nil) do
         __view__.concat(__view__.content_tag(tag_name, display_value, options))
-      end
+      end)
 
-      __view__.capture(&capture_content)
+      __view__.capture(method_value, &capture_content)
     end
     
     # Used to override behavior of with for the case of special attributes
