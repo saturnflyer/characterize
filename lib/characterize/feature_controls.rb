@@ -7,7 +7,7 @@ module Characterize
     # Examples:
     #
     #   def each_favorite(&block)
-    #     each_with_feature(favorites, FavoriteMod, &block)
+    #     each_with_features(favorites, FavoriteMod, &block)
     #   end
     #
     #   <%- user.each_favorite do |favorite| %>
@@ -32,6 +32,7 @@ module Characterize
     #       My Favorite Things: <%= user.favorites.join(', ') %>
     #     </p>
     #   <%- end -%>
+    #   <%= user.with(:favorites, :p, class: "whatever", without: "Oops! No favorites!")
     #
     def with(method_name, tag_name=nil, **options, &block)
       without_option = options.delete(:without)
@@ -62,6 +63,7 @@ module Characterize
     #     </p>
     #   <%- end -%>
     #   <% user.without(:favorites, :p, value: 'No favorites!')
+    #   <% user.without(:favorites, :p, value: "You should have favorites", with: "You DO have favorites!")
     #
     def without(method_name, tag_name=nil, value: nil, **options, &block)
       with_option = options.delete(:with)
