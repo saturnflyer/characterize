@@ -1,6 +1,6 @@
-require 'simplecov'
+require "simplecov"
 SimpleCov.start do
-  add_filter 'test'
+  add_filter "test"
 end
 
 # Configure Rails Environment

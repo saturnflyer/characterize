@@ -1,12 +1,12 @@
-require 'forwardable'
+require "forwardable"
 module Characterize
   module ViewForwards
     extend Forwardable
-  
+
     # Find all view helper modules
-    action_view_helpers = ActionView::Helpers::constants.map{|name|
-      ActionView::Helpers.const_get(name) 
-    }.select{|const|
+    action_view_helpers = ActionView::Helpers.constants.map { |name|
+      ActionView::Helpers.const_get(name)
+    }.select { |const|
       const.is_a?(Module)
     }
 

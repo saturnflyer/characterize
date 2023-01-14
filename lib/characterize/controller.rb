@@ -4,7 +4,7 @@ module Characterize
       klass.extend(::Characterize::ControllerMacros)
       klass.helper_method(:characterize)
     end
-    
+
     private
 
     # Apply character modules to the given object.
@@ -12,20 +12,20 @@ module Characterize
     # configured default characters for the current controller action.
     def characterize(obj, *mods)
       object_name = obj.class.name.to_s.underscore
-      features = !mods.empty? ? mods : characters_for_action(object_name, action_name)
+      features = (!mods.empty?) ? mods : characters_for_action(object_name, action_name)
       obj.__set_characterize_view__(view_context).cast_as(*features)
       obj
     end
 
     def characters_for_action(object_name, action_name)
       defaults = if respond_to? "default_#{object_name}_features"
-        self.send("default_#{object_name}_features")
+        send("default_#{object_name}_features")
       else
         []
       end
 
-      specific_characters = if self.respond_to?("#{object_name}_#{action_name}_features") && action_methods.include?(action_name.to_s)
-        Array(self.send "#{object_name}_#{action_name}_features")
+      specific_characters = if respond_to?("#{object_name}_#{action_name}_features") && action_methods.include?(action_name.to_s)
+        Array(send("#{object_name}_#{action_name}_features"))
       else
         []
       end
@@ -33,13 +33,13 @@ module Characterize
       defaults.concat(specific_characters)
     end
   end
-  
+
   module ControllerMacros
     private
 
     # Generate methods that will load and cast your object with the specified behaviors
     def characterize(object_name, **actions_hash)
-      object_constant_name = object_name.to_s.gsub(/(?:^|_)([a-z])/){ $1.upcase }.gsub('/','::')
+      object_constant_name = object_name.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }.gsub("/", "::")
       default_features = actions_hash.delete(:default) || ["::#{object_constant_name}#{Characterize.module_suffix}"]
 
       mod = Module.new
@@ -54,7 +54,7 @@ module Characterize
         end
 
         def default_#{object_name}_features
-          @default_#{object_name}_features ||= (Characterize.standard_features + [#{default_features.map(&:to_s).join(', ')}]).uniq
+          @default_#{object_name}_features ||= (Characterize.standard_features + [#{default_features.map(&:to_s).join(", ")}]).uniq
         end
       MOD
 
@@ -65,13 +65,13 @@ module Characterize
           end
         MOD
       end
-      self.const_set(object_constant_name + 'ControllerMethods', mod)
+      const_set(object_constant_name + "ControllerMethods", mod)
       include mod
-      self.send(:helper_method, object_name)
+      send(:helper_method, object_name)
     end
 
     def characterize_collection(collection_name, **actions_hash)
-      object_constant_name = collection_name.to_s.singularize.gsub(/(?:^|_)([a-z])/){ $1.upcase }.gsub('/','::')
+      object_constant_name = collection_name.to_s.singularize.gsub(/(?:^|_)([a-z])/) { $1.upcase }.gsub("/", "::")
       default_features = actions_hash.delete(:default) || ["::#{object_constant_name}#{Characterize.module_suffix}"]
 
       mod = Module.new
@@ -86,7 +86,7 @@ module Characterize
         end
 
         def default_#{collection_name}_features
-          @default_#{collection_name}_features ||= (Characterize.standard_features + [#{default_features.map(&:to_s).join(', ')}]).uniq
+          @default_#{collection_name}_features ||= (Characterize.standard_features + [#{default_features.map(&:to_s).join(", ")}]).uniq
         end
       MOD
 
@@ -98,9 +98,9 @@ module Characterize
         MOD
       end
 
-      self.const_set(object_constant_name + 'CollectionControllerMethods', mod)
+      const_set(object_constant_name + "CollectionControllerMethods", mod)
       include mod
-      self.send(:helper_method, collection_name)
+      send(:helper_method, collection_name)
     end
   end
 end

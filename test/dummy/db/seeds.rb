@@ -1,1 +1,1 @@
-User.create!(name: 'Jim')
+User.create!(name: "Jim")

@@ -1,9 +1,9 @@
 require "characterize/version"
 require "characterize/controller"
-require 'characterize/feature_controls'
+require "characterize/feature_controls"
 require "casting"
 require "characterize/collection"
-require 'characterize/railtie' if defined?(::Rails)
+require "characterize/railtie" if defined?(::Rails)
 
 module Characterize
   def self.included(klass)
@@ -12,18 +12,18 @@ module Characterize
       delegate_missing_methods
     }
   end
-  
+
   def __view__
     @characterize_view
   end
-  
+
   def __set_characterize_view__(obj)
     @characterize_view = obj
     self
   end
 
   def self.module_suffix
-    @characterize_suffix ||= 'Character'
+    @characterize_suffix ||= "Character"
   end
 
   def self.module_suffix=(val)
