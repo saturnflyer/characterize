@@ -78,12 +78,18 @@ GEM
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     date (3.3.3)
+    debug (1.7.1)
+      irb (>= 1.5.0)
+      reline (>= 0.3.1)
     docile (1.4.0)
     erubi (1.12.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    io-console (0.6.0)
+    irb (1.6.2)
+      reline (>= 0.3.0)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -146,6 +152,8 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
+    reline (0.3.2)
+      io-console (~> 0.5)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -167,6 +175,7 @@ PLATFORMS
 
 DEPENDENCIES
   characterize!
+  debug
   minitest-spec-rails
   rails-controller-testing
   simplecov
