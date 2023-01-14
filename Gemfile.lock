@@ -87,7 +87,7 @@ GEM
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.8.0)
+    mail (2.8.0.1)
       mini_mime (>= 0.1.1)
       net-imap
       net-pop
@@ -95,7 +95,6 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.1)
     minitest (5.17.0)
     minitest-spec-rails (6.2.0)
       minitest (>= 5.0)
@@ -110,8 +109,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.13.10)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.14.0-arm64-darwin)
       racc (~> 1.4)
     racc (1.6.2)
     rack (2.2.5)
@@ -154,8 +152,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
-    sqlite3 (1.5.4)
-      mini_portile2 (~> 2.8.0)
+    sqlite3 (1.6.0-arm64-darwin)
     thor (1.2.1)
     timeout (0.3.1)
     tzinfo (2.0.5)
