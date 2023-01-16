@@ -2,7 +2,7 @@
 
 module Characterize
   class RelationCollection < Collection
-    Characterize.register_collection(self, ActiveRecord::Relation)
+    Collection.register(self, ActiveRecord::Relation)
 
     def method_missing(method_name, ...)
       if @collection.respond_to?(method_name)

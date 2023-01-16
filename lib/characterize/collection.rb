@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 require "forwardable"
+
 module Characterize
   class Collection
     extend Forwardable
@@ -41,3 +44,4 @@ module Characterize
     end
   end
 end
+require "characterize/relation_collection"
