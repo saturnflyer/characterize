@@ -35,18 +35,6 @@ module Characterize
 
     def_delegators :casted_enum, *(Enumerator.instance_methods(false) - [:object_id])
     def_delegators :casted_enum, *(Enumerable.instance_methods(false))
-
-    def method_missing(name, ...)
-      if casted_enum.respond_to?(name, true)
-        casted_enum.send(name, ...)
-      else
-        super
-      end
-    end
-
-    def respond_to_missing?(name, include_all)
-      casted_enum.respond_to?(name, include_all)
-    end
   end
 end
 require "characterize/relation_collection"
