@@ -51,76 +51,72 @@ module Characterize
         &block
       )
 
-      mod.module_eval {
+      unless method_defined?(load_with)
+        # def load_user
+        #   User.find(params[:id])
+        # end
+        mod.module_eval <<~MOD, __FILE__, __LINE__ + 1
+          def #{load_with}
+            #{object_name.to_s.classify}.find(params[:id])
+          end
+        MOD
+      end
+
+      unless method_defined?(object_name)
         # def user
         #   return @user if instance_variable_defined?(@user) && !@user.nil?
         #
         #   @user = characterize(load_user, *characters_for_action(:user, action_name))
         # end
-        unless method_defined?(object_name)
-          define_method(object_name) do
-            ivar_name = "@#{__method__}"
-            object = instance_variable_get(ivar_name)
-            return object if instance_variable_defined?(ivar_name) && !object.nil?
+        mod.module_eval <<~MOD, __FILE__, __LINE__ + 1
+          def #{object_name}
+            return @#{object_name} if defined?(@#{object_name})
 
-            instance_variable_set(ivar_name,
-              characterize(send(load_with), *characters_for_action(__method__, action_name)))
+            @#{object_name} = characterize(#{load_with}, *characters_for_action(__method__, action_name))
           end
-        end
-
-        # def load_user
-        #   User.find(params[:id])
-        # end
-        unless method_defined?(load_with)
-          define_method(load_with) do
-            Object.const_get(object_name.to_s.classify).find(params[:id])
-          end
-        end
-      }
+        MOD
+      end
 
       send(:helper_method, object_name)
     end
 
-    def characterize_each(collection_name, load_with: "load_#{collection_name}", **actions_hash, &block)
-      characterize_features.add(collection_name, **actions_hash)
+    def characterize_each(name, load_with: "load_#{name}", **actions_hash, &block)
+      characterize_features.add(name, **actions_hash)
 
-      constant_name = collection_name.to_s.singularize.classify
+      constant_name = name.to_s.singularize.classify
       mod = ControllerMacros.attach_module(
         self,
         "#{constant_name}CollectionControllerMethods",
         &block
       )
 
-      mod.module_eval {
+      unless method_defined?(load_with)
+        # def load_users
+        #   User.all
+        # end
+        mod.module_eval <<~MOD, __FILE__, __LINE__ + 1
+          def #{load_with}
+            #{constant_name}.all
+          end
+        MOD
+      end
+
+      unless method_defined?(name)
         # def users
         #   return @users if @users.is_a?(Characterize::Collection)
         #
         #   @users = Characterize::Collection.for(load_users, *characters_for_action(:users, action_name))
         # end
-        unless method_defined?(collection_name)
-          define_method(collection_name) do
-            ivar_name = "@#{collection_name}"
-            collection = instance_variable_get(ivar_name)
-            return collection if collection.is_a?(Characterize::Collection)
+        mod.module_eval <<~MOD, __FILE__, __LINE__ + 1
+          def #{name}
+            return @#{name} if @#{name}.is_a?(Characterize::Collection) && !@#{name}.nil?
 
-            instance_variable_set ivar_name, Characterize::Collection.for(
-              send(load_with),
-              *characters_for_action(__method__, action_name)
-            )
+            @#{name} = Characterize::Collection.for(#{load_with}, *characters_for_action(__method__, action_name))
           end
-        end
+        MOD
+      end
 
-        # def load_users
-        #   User.all
-        # end
-        unless method_defined?(load_with)
-          define_method(load_with) do
-            Object.const_get(constant_name).all
-          end
-        end
-      }
-
-      send(:helper_method, collection_name)
+      send(:helper_method, name)
     end
   end
 end
