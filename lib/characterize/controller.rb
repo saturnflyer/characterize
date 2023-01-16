@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require "characterize/feature_set"
+
 module Characterize
   module Controller
     def self.included(klass)
@@ -9,7 +13,7 @@ module Characterize
 
     # Apply character modules to the given object.
     # This will use either the provided modules or if none are provided, the
-    # configured default characters for the current controller action.
+    # configured characters for the current controller action.
     def characterize(obj, *mods)
       object_name = obj.class.name.to_s.underscore
       features = (!mods.empty?) ? mods : characters_for_action(object_name, action_name)
@@ -18,88 +22,104 @@ module Characterize
     end
 
     def characters_for_action(object_name, action_name)
-      defaults = if respond_to? "default_#{object_name}_features"
-        send("default_#{object_name}_features")
-      else
-        []
-      end
-
-      specific_characters = if respond_to?("#{object_name}_#{action_name}_features") && action_methods.include?(action_name.to_s)
-        Array(send("#{object_name}_#{action_name}_features"))
-      else
-        []
-      end
-
-      defaults.concat(specific_characters)
+      self.class.characterize_features.dig(object_name, action_name)
     end
   end
 
   module ControllerMacros
+    def self.attach_module(klass, name, &block)
+      mod = Module.new(&block)
+      klass.const_set(name, mod)
+      klass.include mod
+
+      mod
+    end
+
+    def characterize_features
+      @characterize_features ||= FeatureSet.new
+    end
+
     private
 
     # Generate methods that will load and cast your object with the specified behaviors
-    def characterize(object_name, **actions_hash)
-      object_constant_name = object_name.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }.gsub("/", "::")
-      default_features = actions_hash.delete(:default) || ["::#{object_constant_name}#{Characterize.module_suffix}"]
+    def characterize(object_name, load_with: "load_#{object_name}", **actions_hash, &block)
+      characterize_features.add(object_name, **actions_hash)
 
-      mod = Module.new
-      mod.module_eval <<~MOD, __FILE__, __LINE__ + 1
-        def #{object_name}
-          return @#{object_name} if defined?(@#{object_name})
-          @#{object_name} = characterize load_#{object_name}, *characters_for_action(:#{object_name}, action_name)
-        end
+      mod = ControllerMacros.attach_module(
+        self,
+        "#{object_name.to_s.classify}ControllerMethods",
+        &block
+      )
 
-        def load_#{object_name}
-          #{object_constant_name}.find(params[:id])
-        end
+      mod.module_eval {
+        # def user
+        #   return @user if instance_variable_defined?(@user) && !@user.nil?
+        #
+        #   @user = characterize(load_user, *characters_for_action(:user, action_name))
+        # end
+        unless method_defined?(object_name)
+          define_method(object_name) do
+            ivar_name = "@#{__method__}"
+            object = instance_variable_get(ivar_name)
+            return object if instance_variable_defined?(ivar_name) && !object.nil?
 
-        def default_#{object_name}_features
-          @default_#{object_name}_features ||= (Characterize.standard_features + [#{default_features.map(&:to_s).join(", ")}]).uniq
-        end
-      MOD
-
-      actions_hash.each_pair do |action_name, characters|
-        mod.module_eval <<~MOD, __FILE__, __LINE__ + 1
-          def #{object_name}_#{action_name}_features
-            (default_#{object_name}_features + [#{characters.map(&:to_s).join(", ")}]).uniq
+            instance_variable_set(ivar_name,
+              characterize(send(load_with), *characters_for_action(__method__, action_name)))
           end
-        MOD
-      end
-      const_set(object_constant_name + "ControllerMethods", mod)
-      include mod
+        end
+
+        # def load_user
+        #   User.find(params[:id])
+        # end
+        unless method_defined?(load_with)
+          define_method(load_with) do
+            Object.const_get(object_name.to_s.classify).find(params[:id])
+          end
+        end
+      }
+
       send(:helper_method, object_name)
     end
 
-    def characterize_collection(collection_name, **actions_hash)
-      object_constant_name = collection_name.to_s.singularize.gsub(/(?:^|_)([a-z])/) { $1.upcase }.gsub("/", "::")
-      default_features = actions_hash.delete(:default) || ["::#{object_constant_name}#{Characterize.module_suffix}"]
+    def characterize_collection(collection_name, load_with: "load_#{collection_name}", **actions_hash, &block)
+      characterize_features.add(collection_name, **actions_hash)
 
-      mod = Module.new
-      mod.module_eval <<~MOD, __FILE__, __LINE__ + 1
-        def #{collection_name}
-          return @#{collection_name} if @#{collection_name}.is_a?(Characterize::Collection)
-          @#{collection_name} = Characterize::Collection.for load_#{collection_name}, *characters_for_action(:#{collection_name}, action_name)
-        end
+      constant_name = collection_name.to_s.singularize.classify
+      mod = ControllerMacros.attach_module(
+        self,
+        "#{constant_name}CollectionControllerMethods",
+        &block
+      )
 
-        def load_#{collection_name}
-          #{object_constant_name}.all
-        end
+      mod.module_eval {
+        # def users
+        #   return @users if @users.is_a?(Characterize::Collection)
+        #
+        #   @users = Characterize::Collection.for(load_users, *characters_for_action(:users, action_name))
+        # end
+        unless method_defined?(collection_name)
+          define_method(collection_name) do
+            ivar_name = "@#{collection_name}"
+            collection = instance_variable_get(ivar_name)
+            return collection if collection.is_a?(Characterize::Collection)
 
-        def default_#{collection_name}_features
-          @default_#{collection_name}_features ||= (Characterize.standard_features + [#{default_features.map(&:to_s).join(", ")}]).uniq
-        end
-      MOD
-
-      actions_hash.each_pair do |action_name, characters|
-        mod.module_eval <<~MOD, __FILE__, __LINE__ + 1
-          def #{collection_name}_#{action_name}_features
-            (default_#{collection_name}_features + [#{characters.map(&:to_s).join(", ")}]).uniq
+            instance_variable_set ivar_name, Characterize::Collection.for(
+              send(load_with),
+              *characters_for_action(__method__, action_name)
+            )
           end
-        MOD
-      end
+        end
 
-      const_set(object_constant_name + "CollectionControllerMethods", mod)
-      include mod
+        # def load_users
+        #   User.all
+        # end
+        unless method_defined?(load_with)
+          define_method(load_with) do
+            Object.const_get(constant_name).all
+          end
+        end
+      }
+
       send(:helper_method, collection_name)
     end
   end

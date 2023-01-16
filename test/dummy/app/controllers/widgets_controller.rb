@@ -1,9 +1,12 @@
 class WidgetsController < ApplicationController
-  characterize :widget
+  characterize :widget,
+    default: [SpecialCharacter, WidgetCharacter],
+    load_with: :make_a_widget
+
   def show
   end
 
-  def load_widget
+  def make_a_widget
     Widget.new
   end
 end

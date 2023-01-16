@@ -1,11 +1,18 @@
 class UsersController < ApplicationController
   Characterize.standard_features = Characterize.builtin_standard_features + [StandardCharacter]
 
-  characterize :user, default: [SpecialCharacter, UserCharacter],
+  characterize :user,
+    default: [SpecialCharacter, UserCharacter],
     edit: [EditUserCharacter]
-  characterize :widget
 
-  characterize_collection :users, index: [UserCollectionCharacter]
+  characterize :widget, default: [SpecialCharacter, WidgetCharacter] do
+    def load_widget
+      Widget.new
+    end
+  end
+
+  characterize_collection :users,
+    index: [UserCollectionCharacter]
 
   def index
   end
@@ -15,9 +22,5 @@ class UsersController < ApplicationController
 
   def edit
     render plain: user.editing_title
-  end
-
-  def load_widget
-    Widget.new
   end
 end

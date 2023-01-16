@@ -77,6 +77,19 @@ end
 
 This will create a `widgets` helper method that will return a collection object where enumerable methods will cast the object as the provided modules.
 
+By default these methods will assume a loading method for your records but you can override this:
+
+```ruby
+class UsersController < ApplicationController
+  characterize :user # creates a `load_user` method
+  characterize :user, load_with: :get_a_user
+
+  def get_a_user
+    UserRepository.get(params[:user_id])
+  end
+end
+```
+
 ## Altering the Settings
 
 ### Module names
