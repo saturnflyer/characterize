@@ -81,7 +81,7 @@ module Characterize
       send(:helper_method, object_name)
     end
 
-    def characterize_collection(collection_name, load_with: "load_#{collection_name}", **actions_hash, &block)
+    def characterize_each(collection_name, load_with: "load_#{collection_name}", **actions_hash, &block)
       characterize_features.add(collection_name, **actions_hash)
 
       constant_name = collection_name.to_s.singularize.classify

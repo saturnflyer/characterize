@@ -68,7 +68,7 @@ You can also use it to characterize collections:
 
 ```ruby
 class WidgetsController < ApplicationController
-  characterize_collection :widgets, index: [SuperWidgetCharacter]
+  characterize_each :widgets, index: [SuperWidgetCharacter]
 
   def index
   end

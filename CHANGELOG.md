@@ -1,6 +1,6 @@
 # Unreleased
 
-- Add characterize_collection
+- Add characterize_each
 
 # 0.1.0
 

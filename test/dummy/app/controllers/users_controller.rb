@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     end
   end
 
-  characterize_collection :users,
+  characterize_each :users,
     index: [UserCollectionCharacter]
 
   def index
