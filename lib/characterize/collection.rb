@@ -17,7 +17,11 @@ module Characterize
       end
 
       def for(collection, *behaviors)
-        registry.fetch(collection.class, self).new(collection, *behaviors)
+        (
+          registry.find { |key, _value|
+            collection.class < key
+          }.last || self
+        ).new(collection, *behaviors)
       end
     end
 
@@ -30,6 +34,7 @@ module Characterize
     attr :casted_enum
 
     def_delegators :casted_enum, *(Enumerator.instance_methods(false) - [:object_id])
+    def_delegators :casted_enum, *(Enumerable.instance_methods(false))
 
     def method_missing(name, ...)
       if casted_enum.respond_to?(name, true)

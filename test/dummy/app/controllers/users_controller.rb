@@ -12,7 +12,11 @@ class UsersController < ApplicationController
   end
 
   characterize_each :users,
-    index: [UserCollectionCharacter]
+    index: [UserCollectionCharacter] do
+      def load_users
+        User.unscoped
+      end
+    end
 
   def index
   end

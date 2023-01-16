@@ -33,6 +33,7 @@ describe UsersController do
   it "renders collections with the configured features" do
     get :index
     assert_select "p", "Amy in a collection"
+    assert_select "p.names", "Amy in a collection"
   end
 
   it "uses feature controls" do

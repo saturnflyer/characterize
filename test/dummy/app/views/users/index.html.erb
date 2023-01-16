@@ -1,3 +1,6 @@
 <% users.each do |user| %>
   <p><%= user.index_name %>
 <% end %>
+<% if users.respond_to?(:where) %>
+  <p class="names"><%= users.where.not(name: nil).map(&:index_name).join(", ") %></p>
+<% end %>

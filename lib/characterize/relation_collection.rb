@@ -7,9 +7,8 @@ module Characterize
     def method_missing(method_name, ...)
       if @collection.respond_to?(method_name)
         @collection.send(method_name, ...)
-      else
-        super
       end
+      self
     end
 
     def respond_to_missing?(name, include_all)
