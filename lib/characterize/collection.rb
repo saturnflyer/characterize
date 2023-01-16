@@ -3,21 +3,18 @@ module Characterize
   class Collection
     extend Forwardable
 
-    def self.for(collection, *behaviors)
-      if collection.class < ActiveRecord::Relation
-        ::Characterize::Collection::Relation
-      else
-        self
-      end.new(collection, *behaviors)
-    end
+    class << self
+      def registry
+        @registry ||= {}
+      end
 
-    class Relation < self
-      def method_missing(method_name, ...)
-        if @collection.respond_to?(method_name)
-          @collection.send(method_name, ...)
-        else
-          super
-        end
+      # Register a collection class to manage the given type
+      def register(klass, type)
+        registry[type] = klass
+      end
+
+      def for(collection, *behaviors)
+        registry.fetch(collection.class, self).new(collection, *behaviors)
       end
     end
 

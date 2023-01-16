@@ -41,4 +41,8 @@ module Characterize
   def self.builtin_standard_features
     [::Characterize::FeatureControls].freeze
   end
+
+  def self.register_collection(klass, type)
+    Collection.register(klass, type)
+  end
 end
