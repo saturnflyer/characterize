@@ -31,7 +31,7 @@ module Characterize
       @collection = collection
       @behaviors = behaviors
     end
-    attr :casted_enum
+    attr :casted_enum, :collection, :behaviors
 
     def_delegators :casted_enum, *(Enumerator.instance_methods(false) - [:object_id])
     def_delegators :casted_enum, *(Enumerable.instance_methods(false))

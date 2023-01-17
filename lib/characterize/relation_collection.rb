@@ -1,18 +1,13 @@
 # frozen_string_literal: true
 
+require "direction"
+
 module Characterize
   class RelationCollection < Collection
     Collection.register(self, ActiveRecord::Relation)
+    extend Direction
 
-    def method_missing(method_name, ...)
-      if @collection.respond_to?(method_name)
-        @collection.send(method_name, ...)
-      end
-      self
-    end
-
-    def respond_to_missing?(name, include_all)
-      @collection.respond_to?(name, include_all)
-    end
+    command ActiveRecord::QueryMethods.instance_methods => :collection
+    query ActiveRecord::Calculations.instance_methods => :collection
   end
 end

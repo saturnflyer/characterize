@@ -3,6 +3,7 @@ PATH
   specs:
     characterize (0.2.0)
       casting (~> 1.0.2)
+      direction
       rails (>= 6.1)
 
 GEM
@@ -82,6 +83,7 @@ GEM
     debug (1.7.1)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    direction (0.0.5)
     docile (1.4.0)
     erubi (1.12.0)
     globalid (1.0.0)

@@ -22,4 +22,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "casting", "~> 1.0.2"
   spec.add_dependency "rails", ">= 6.1"
+  spec.add_dependency "direction"
 end
