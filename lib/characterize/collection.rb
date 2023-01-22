@@ -23,6 +23,17 @@ module Characterize
           }.last || self
         ).new(collection, *behaviors)
       end
+
+      def safe_command(*classes, receiver:)
+        standard = [:object_id, :__send__] +
+          Enumerator.instance_methods(false) +
+          Enumerable.instance_methods(false)
+
+        classes.each do |klass|
+          names = klass.instance_methods - standard - instance_methods(false)
+          command names => :collection
+        end
+      end
     end
 
     include Casting::Enum
