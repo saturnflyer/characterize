@@ -109,7 +109,7 @@ module Characterize
         # end
         mod.module_eval <<~MOD, __FILE__, __LINE__ + 1
           def #{name}
-            return @#{name} if @#{name}.is_a?(Characterize::Collection) && !@#{name}.nil?
+            return @#{name} if !@#{name}.nil? && @#{name}.is_a?(Characterize::Collection)
 
             @#{name} = Characterize::Collection.for(#{load_with}, *characters_for_action(__method__, action_name))
           end
