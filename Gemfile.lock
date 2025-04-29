@@ -79,7 +79,7 @@ GEM
     casting (1.0.2)
     concurrent-ruby (1.3.4)
     crass (1.0.6)
-    date (3.3.3)
+    date (3.4.1)
     debug (1.10.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
@@ -112,12 +112,12 @@ GEM
     minitest-spec-rails (7.4.1)
       minitest (>= 5.0)
       railties (>= 4.1)
-    net-imap (0.3.7)
+    net-imap (0.3.9)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.1)
+    net-protocol (0.2.2)
       timeout
     net-smtp (0.3.3)
       net-protocol
@@ -214,7 +214,7 @@ GEM
       rubocop-performance (~> 1.22.0)
     stringio (3.1.2)
     thor (1.3.2)
-    timeout (0.4.0)
+    timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.6.0)
