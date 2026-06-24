@@ -10,6 +10,16 @@ module Characterize
     klass.class_eval {
       include Casting::Client
       delegate_missing_methods
+
+      # Rails 8 defines Object#with for temporary attribute assignment.
+      # Route to cast feature controls when present.
+      def with(*args, **kwargs, &block)
+        if (attendant = method_delegate(:with))
+          cast(:with, attendant, *args, **kwargs, &block)
+        else
+          super
+        end
+      end
     }
   end
 
