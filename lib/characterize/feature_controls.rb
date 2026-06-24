@@ -47,11 +47,15 @@ module Characterize
         end
       end
 
-      capture_content = block || ->(method_value = nil) do
+      capture_content = block || ->(_method_value = nil) do
         __view__.concat(__view__.content_tag(tag_name, display_value, options))
       end
 
-      __view__.capture(method_value, &capture_content)
+      if block
+        __view__.capture { capture_content.call(method_value) }
+      else
+        __view__.capture { capture_content.call }
+      end
     end
 
     # Conditionally render content for the object when the attribute is NOT present.
@@ -82,11 +86,15 @@ module Characterize
         end
       end
 
-      capture_content = (block || ->(method_value = nil) do
+      capture_content = (block || ->(_method_value = nil) do
         __view__.concat(__view__.content_tag(tag_name, display_value, options))
       end)
 
-      __view__.capture(method_value, &capture_content)
+      if block
+        __view__.capture { capture_content.call(method_value) }
+      else
+        __view__.capture { capture_content.call }
+      end
     end
 
     # Used to override behavior of with for the case of special attributes
