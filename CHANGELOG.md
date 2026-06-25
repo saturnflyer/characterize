@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [0.2.1] - Unreleased
+
 ## [0.2.0] - 2026-06-25
 
 ### Added
@@ -28,14 +30,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - #with feature control works now that Object#with is defined (1020ccd)
 - Collection.for no longer raises for plain enumerables (4a8380f)
 - Load Active Record query delegators under Ruby 4.0 (4a8380f)
-
-## [0.0.3] - 2015-01-27
-
-### Added
-
-- Allow setting a list of standard features
-- Support configuring the module suffix
-
-### Changed
-
-- Rename character methods to use "features"
