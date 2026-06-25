@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    characterize (0.2.0)
+    characterize (0.2.1)
       casting (~> 1.0.2)
       direction
       rails (>= 6.1)
