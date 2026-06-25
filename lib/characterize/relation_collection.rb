@@ -7,9 +7,9 @@ module Characterize
     Collection.register(self, ActiveRecord::Relation)
     extend Direction
 
-    safe_command ActiveRecord::QueryMethods, receiver: :collection
-    query ActiveRecord::Calculations.instance_methods => :collection
-
+    # Defined before safe_command/query so these names are excluded from the
+    # auto-generated delegators (see Collection.safe_command) rather than
+    # redefining them.
     def not(...)
       reset_collection collection.where.not(...)
       self
@@ -24,5 +24,8 @@ module Characterize
       reset_collection collection.offset(...)
       self
     end
+
+    safe_command ActiveRecord::QueryMethods, receiver: :collection
+    query ActiveRecord::Calculations.instance_methods => :collection
   end
 end

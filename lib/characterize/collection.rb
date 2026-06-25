@@ -54,8 +54,8 @@ module Characterize
     end
     attr :casted_enum, :collection, :behaviors
 
-    def_delegators :casted_enum, *(Enumerator.instance_methods(false) - [:object_id])
-    def_delegators :casted_enum, *(Enumerable.instance_methods(false))
+    delegated_methods = (Enumerator.instance_methods(false) + Enumerable.instance_methods(false)).uniq - [:object_id, :inspect]
+    def_delegators :casted_enum, *delegated_methods
 
     def inspect
       %(#<#{self.class} #{object_id}>)
