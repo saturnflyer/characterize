@@ -207,6 +207,8 @@ GEM
       psych (>= 4.0.0)
       tsort
     regexp_parser (2.12.0)
+    reissue (0.4.22)
+      rake
     reline (0.6.3)
       io-console (~> 0.5)
     rubocop (1.87.0)
@@ -278,6 +280,7 @@ DEPENDENCIES
   ostruct
   rails (~> 8.0)
   rails-controller-testing
+  reissue
   simplecov
   sqlite3 (~> 2.0)
   standard
