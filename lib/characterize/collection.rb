@@ -35,13 +35,6 @@ module Characterize
 
         classes.each do |klass|
           names = klass.instance_methods - standard - instance_methods(false)
-          # Direction builds a "#{name}_result" delegator via Forwardable,
-          # which evals the name as Ruby source. Names that aren't plain
-          # identifiers -- bang (preload!), predicate (exists?), setter
-          # (select_values=) or operator methods -- would produce invalid
-          # identifiers like "preload!_result" and raise SyntaxError under
-          # Ruby 4.0. Keep only plain-identifier methods.
-          names = names.select { |name| name.match?(/\A[a-zA-Z_][a-zA-Z0-9_]*\z/) }
           command names => :collection
         end
       end

@@ -29,9 +29,9 @@ describe Characterize::RelationCollection do
     assert_instance_of Characterize::RelationCollection, collection
   end
 
-  it "loads ActiveRecord query delegators without invalid Direction methods" do
+  it "delegates ActiveRecord query methods, including non-identifier names" do
     assert Characterize::RelationCollection.instance_methods.include?(:where)
-    refute Characterize::RelationCollection.instance_methods.include?(:"preload!")
+    assert Characterize::RelationCollection.instance_methods.include?(:preload!)
   end
 
   it "rebuilds characterized items after not" do
