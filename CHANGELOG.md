@@ -23,8 +23,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Collection.for no longer raises for plain enumerables
 - Support Rails 8 and Ruby 4.0
 
-## [0.0.1] - 2014-06-17
+## [0.0.3] - 2015-01-27
 
 ### Added
 
-- Initial gem adding characterize method to rails controllers
+- Allow setting a list of standard features
+- Support configuring the module suffix
+
+### Changed
+
+- Rename character methods to use "features"
