@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "rails", "~> 8.0"
+gem "rails", "~> 8.1"
 gem "sqlite3", "~> 2.0"
 gem "ostruct"
 gem "rails-controller-testing"
