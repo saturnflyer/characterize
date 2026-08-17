@@ -231,8 +231,8 @@ GEM
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
     simplecov (1.0.3)
-    sqlite3 (2.9.5-arm64-darwin)
-    sqlite3 (2.9.5-x86_64-linux-gnu)
+    sqlite3 (2.9.6-arm64-darwin)
+    sqlite3 (2.9.6-x86_64-linux-gnu)
     standard (1.55.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -276,7 +276,7 @@ DEPENDENCIES
   rails-controller-testing
   reissue
   simplecov
-  sqlite3 (~> 2.0)
+  sqlite3 (~> 2.9)
   standard
 
 BUNDLED WITH
